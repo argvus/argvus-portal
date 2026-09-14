@@ -23,9 +23,9 @@ Wayland/session variables into `systemd --user` and DBus activation.
 `argvus-portal` only supplies defaults:
 
 - `/etc/environment.d/argvus-portal.conf`
-- `/usr/share/argvus/xdg-desktop-portal/hyprland-portals.conf`
+- `/usr/share/argvus/portal/config/xdg-desktop-portal/hyprland-portals.conf`
 
-`/usr/share/argvus` is placed first in `XDG_CONFIG_DIRS`, so
+`/usr/share/argvus/portal/config` is placed first in `XDG_CONFIG_DIRS`, so
 xdg-desktop-portal discovers the ARGVUS Hyprland preference without conflicting
 with files shipped by `xdg-desktop-portal-hyprland`.
 
