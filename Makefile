@@ -13,35 +13,35 @@ help:
 	@echo "  make validate"
 
 install:
+	install -dm755 "$(DESTDIR)$(PREFIX)/share/argvus/portal"
+	cp -a src/usr/share/argvus/portal/. "$(DESTDIR)$(PREFIX)/share/argvus/portal/"
 	install -dm755 "$(DESTDIR)/etc/environment.d"
-	cp -a src/environment.d/. "$(DESTDIR)/etc/environment.d/"
-	install -Dm644 src/xdg-desktop-portal/hyprland-portals.conf \
-		"$(DESTDIR)$(PREFIX)/share/argvus/xdg-desktop-portal/hyprland-portals.conf"
+	cp -a src/usr/share/argvus/portal/config/environment.d/. "$(DESTDIR)/etc/environment.d/"
 	install -Dm644 LICENSE "$(DESTDIR)$(PREFIX)/share/licenses/argvus-portal/LICENSE"
 
 uninstall:
 	rm -f "$(DESTDIR)/etc/environment.d/argvus-portal.conf"
 	rm -f "$(DESTDIR)/etc/environment.d/argvus.conf"
 	rm -f "$(DESTDIR)/etc/environment.d/wayland.conf"
-	rm -f "$(DESTDIR)$(PREFIX)/share/argvus/xdg-desktop-portal/hyprland-portals.conf"
+	rm -rf "$(DESTDIR)$(PREFIX)/share/argvus/portal"
 	rm -f "$(DESTDIR)$(PREFIX)/share/licenses/argvus-portal/LICENSE"
 
 validate:
-	@test -f src/environment.d/argvus-portal.conf
-	@test -f src/environment.d/argvus.conf
-	@test -f src/environment.d/wayland.conf
-	@test -f src/xdg-desktop-portal/hyprland-portals.conf
+	@test -f src/usr/share/argvus/portal/config/environment.d/argvus-portal.conf
+	@test -f src/usr/share/argvus/portal/config/environment.d/argvus.conf
+	@test -f src/usr/share/argvus/portal/config/environment.d/wayland.conf
+	@test -f src/usr/share/argvus/portal/config/xdg-desktop-portal/hyprland-portals.conf
 	@awk ' \
 		/^[[:space:]]*($$|#)/ { next } \
 		/^[A-Za-z_][A-Za-z0-9_]*=/ { next } \
 		{ print "invalid environment.d line " FNR ": " $$0; ok=1 } \
-		END { exit ok }' src/environment.d/*.conf
+		END { exit ok }' src/usr/share/argvus/portal/config/environment.d/*.conf
 	@awk ' \
 		/^[[:space:]]*($$|#)/ { next } \
 		/^\[[A-Za-z0-9_.-]+\]$$/ { next } \
 		/^[A-Za-z0-9_.-]+=[^=]*$$/ { next } \
 		{ print "invalid portals.conf line " FNR ": " $$0; ok=1 } \
-		END { exit ok }' src/xdg-desktop-portal/hyprland-portals.conf
+		END { exit ok }' src/usr/share/argvus/portal/config/xdg-desktop-portal/hyprland-portals.conf
 	@! find . -path './pkg' -prune -o -path './src' -prune -o -name '*.service' -print | grep -q . || \
 		{ echo "argvus-portal must not ship duplicate portal user services"; exit 1; }
 	@echo "argvus-portal config ok"
