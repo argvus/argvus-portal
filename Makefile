@@ -1,56 +1,53 @@
-PREFIX ?= /usr
-DESTDIR ?=
+.PHONY: help build package install install-package clean validate lint spellcheck changelog
 
 .DEFAULT_GOAL := help
 
-.PHONY: help install uninstall validate build clean
-
 help:
 	@echo "Available targets:"
-	@echo "  make build"
-	@echo "  make install"
-	@echo "  make uninstall"
-	@echo "  make validate"
-
-install:
-	install -dm755 "$(DESTDIR)$(PREFIX)/share/argvus/portal"
-	cp -a src/usr/share/argvus/portal/. "$(DESTDIR)$(PREFIX)/share/argvus/portal/"
-	install -dm755 "$(DESTDIR)/etc/environment.d"
-	cp -a src/usr/share/argvus/portal/config/environment.d/. "$(DESTDIR)/etc/environment.d/"
-	install -Dm644 LICENSE "$(DESTDIR)$(PREFIX)/share/licenses/argvus-portal/LICENSE"
-
-uninstall:
-	rm -f "$(DESTDIR)/etc/environment.d/argvus-portal.conf"
-	rm -f "$(DESTDIR)/etc/environment.d/argvus.conf"
-	rm -f "$(DESTDIR)/etc/environment.d/wayland.conf"
-	rm -rf "$(DESTDIR)$(PREFIX)/share/argvus/portal"
-	rm -f "$(DESTDIR)$(PREFIX)/share/licenses/argvus-portal/LICENSE"
-
-validate:
-	@test -f src/usr/share/argvus/portal/config/environment.d/argvus-portal.conf
-	@test -f src/usr/share/argvus/portal/config/environment.d/argvus.conf
-	@test -f src/usr/share/argvus/portal/config/environment.d/wayland.conf
-	@test -f src/usr/share/argvus/portal/config/xdg-desktop-portal/hyprland-portals.conf
-	@awk ' \
-		/^[[:space:]]*($$|#)/ { next } \
-		/^[A-Za-z_][A-Za-z0-9_]*=/ { next } \
-		{ print "invalid environment.d line " FNR ": " $$0; ok=1 } \
-		END { exit ok }' src/usr/share/argvus/portal/config/environment.d/*.conf
-	@awk ' \
-		/^[[:space:]]*($$|#)/ { next } \
-		/^\[[A-Za-z0-9_.-]+\]$$/ { next } \
-		/^[A-Za-z0-9_.-]+=[^=]*$$/ { next } \
-		{ print "invalid portals.conf line " FNR ": " $$0; ok=1 } \
-		END { exit ok }' src/usr/share/argvus/portal/config/xdg-desktop-portal/hyprland-portals.conf
-	@! find . -path './pkg' -prune -o -path './src' -prune -o -name '*.service' -print | grep -q . || \
-		{ echo "argvus-portal must not ship duplicate portal user services"; exit 1; }
-	@echo "argvus-portal config ok"
-
-.PHONY: build
+	@echo "  make build           - build the package into build/"
+	@echo "  make package         - alias for make build"
+	@echo "  make install         - install the single local package (sudo pacman -U)"
+	@echo "  make clean           - remove build/ outputs"
+	@echo "  make validate        - run required repository and PKGBUILD checks"
+	@echo "  make lint            - run local static checks"
+	@echo "  make spellcheck      - run cspell (if installed)"
+	@echo "  make changelog       - regenerate CHANGELOG.md with git-cliff"
 
 build:
-	@tools/build-local-package.sh
+	@tools/sh/pkgbuild_local.sh
+
+package: build
+
+install:
+	@set -e; \
+	package="$$(find build/dist -maxdepth 1 -type f -name '*.pkg.tar.zst' -print | sort | head -n 1)"; \
+	count="$$(find build/dist -maxdepth 1 -type f -name '*.pkg.tar.zst' -print | wc -l)"; \
+	if [ "$$count" -ne 1 ] || [ -z "$$package" ]; then \
+		echo "Expected exactly one package in build/dist; run 'make clean && make build'." >&2; \
+		exit 1; \
+	fi; \
+	sudo pacman -U "$$package"
+
+install-package: install
+
+validate:
+	@tools/sh/validate.sh
+
+lint:
+	@shellcheck tools/sh/*.sh packaging/arch/common/*.sh src/usr/bin/argvus-hello
+	@bash -n tools/sh/*.sh packaging/arch/common/*.sh src/usr/bin/argvus-hello
+	@git diff --check
+	@echo "Lint OK"
+
+spellcheck:
+	@if command -v cspell >/dev/null 2>&1; then \
+		cspell --config cspell.json .; \
+	else \
+		echo "cspell is not installed; skipping (CI runs it)." >&2; \
+	fi
+
+changelog:
+	@git-cliff -o CHANGELOG.md
 
 clean:
-	rm -rf dist
-	rm -f packaging/arch/*.zst packaging/arch/*.tar.gz
+	rm -rf -- build/

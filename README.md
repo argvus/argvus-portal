@@ -2,50 +2,42 @@
 
 Wayland, DBus and xdg-desktop-portal integration defaults for ARGVUS.
 
-This package owns the extracted portal/environment layer from the larger
-`argvus` desktop package:
+This Arch package owns the portal/environment configuration layer extracted
+from the larger `argvus` desktop package. It provides systemd `environment.d`
+defaults and the Hyprland portal backend preference, without shipping portal
+service units owned by upstream packages.
 
-- systemd `environment.d` defaults for Wayland, DBus activation, desktop
-  identity and toolkit behavior
-- xdg-desktop-portal backend preference for Hyprland sessions
-- Arch packaging for the upstream portal dependencies
+## Build and install
 
-It deliberately does not ship `xdg-desktop-portal*.service` units. Those remain
-owned by the upstream Arch packages and are activated through their normal
-DBus/systemd user paths.
-
-## Runtime
-
-`argvus-session` remains the runtime owner. During login, `argvus-session`,
-`argvus-start` and `argvus-sessionctl import-environment` export the active
-Wayland/session variables into `systemd --user` and DBus activation.
-
-`argvus-portal` only supplies defaults:
-
-- `/etc/environment.d/argvus-portal.conf`
-- `/usr/share/argvus/portal/config/xdg-desktop-portal/hyprland-portals.conf`
-
-`/usr/share/argvus/portal/config` is placed first in `XDG_CONFIG_DIRS`, so
-xdg-desktop-portal discovers the ARGVUS Hyprland preference without conflicting
-with files shipped by `xdg-desktop-portal-hyprland`.
-
-## Installation
+On Arch Linux or a compatible distribution:
 
 ```sh
+sudo pacman -S --needed base-devel git shellcheck
+make validate
+make build
 make install
 ```
 
-Use `DESTDIR` for packaging:
+`make build` creates a deterministic source archive in `build/artifacts/` and
+one package in `build/dist/`. For package metadata only:
 
 ```sh
-make DESTDIR="$pkgdir" PREFIX=/usr install
+makepkg -p packaging/arch/ci/PKGBUILD --printsrcinfo
 ```
 
-## Validation
+See [packaging/arch/README.md](packaging/arch/README.md) for local and release
+build details.
 
-```sh
-make validate
-```
+## Installed files
 
-The repository does not add user units, so `systemd-analyze --user verify` is
-not required for this package.
+- `/etc/environment.d/argvus-portal.conf`
+- `/etc/environment.d/argvus.conf`
+- `/etc/environment.d/wayland.conf`
+- `/usr/share/argvus/portal/config/xdg-desktop-portal/hyprland-portals.conf`
+
+`argvus-session` remains responsible for importing the active session
+environment into systemd and DBus activation.
+
+## License
+
+SPDX: `GPL-3.0-only`. See [LICENSE](LICENSE).
