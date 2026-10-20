@@ -17,6 +17,6 @@ Generated checksums, `src/`, `pkg/`, archives, and packages are not committed.
 Inspect metadata with:
 
 ```sh
-makepkg -p packaging/arch/ci/PKGBUILD --printsrcinfo
+makepkg -p packaging/arch/remote/PKGBUILD --printsrcinfo
 makepkg -p packaging/arch/local/PKGBUILD --printsrcinfo
 ```

@@ -6,4 +6,4 @@ maintainers or through the repository's GitHub Security Advisories.
 
 This project produces an Arch Linux package. Security-sensitive behavior
 includes source checksum validation, package signing in release CI, and the
-source archive URL in `packaging/arch/ci/PKGBUILD`.
+source archive URL in `packaging/arch/remote/PKGBUILD`.

@@ -11,10 +11,10 @@ cd "$ROOT_DIR"
 shellcheck tools/sh/*.sh packaging/arch/common/*.sh
 bash -n tools/sh/*.sh packaging/arch/common/*.sh
 metadata() { bash -c 'source "$1"; printf "%s\n" "$pkgname" "$pkgver" "$pkgrel" "$pkgdesc"; printf "%s\n" "${arch[*]}" "${license[*]}" "${depends[*]}" "${makedepends[*]}" "${options[*]}"' bash "$1"; }
-ci_metadata="$(metadata packaging/arch/ci/PKGBUILD)"
+remote_metadata="$(metadata packaging/arch/remote/PKGBUILD)"
 local_metadata="$(metadata packaging/arch/local/PKGBUILD)"
-[[ "$ci_metadata" == "$local_metadata" ]] || die "CI and local PKGBUILD metadata is out of sync"
-for pkgbuild_dir in packaging/arch/ci packaging/arch/local; do
+[[ "$remote_metadata" == "$local_metadata" ]] || die "remote and local PKGBUILD metadata is out of sync"
+for pkgbuild_dir in packaging/arch/remote packaging/arch/local; do
 	(cd "$pkgbuild_dir" && makepkg -p PKGBUILD --printsrcinfo >/dev/null)
 done
 git diff --check

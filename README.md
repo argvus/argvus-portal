@@ -22,7 +22,7 @@ make install
 one package in `build/dist/`. For package metadata only:
 
 ```sh
-makepkg -p packaging/arch/ci/PKGBUILD --printsrcinfo
+makepkg -p packaging/arch/remote/PKGBUILD --printsrcinfo
 ```
 
 See [packaging/arch/README.md](packaging/arch/README.md) for local and release
