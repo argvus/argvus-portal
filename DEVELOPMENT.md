@@ -8,7 +8,7 @@ Arch Linux package in the [ARGVUS](https://github.com/argvus) organization.
 ```text
 packaging/
   arch/
-    ci/        PKGBUILD used by GitHub Actions (release built from a tag)
+    remote/       PKGBUILD used by GitHub Actions (release built from a tag)
     local/     PKGBUILD used for local builds (from the working tree)
 src/           package payload (usr/ tree that is installed into /usr/)
 tools/
