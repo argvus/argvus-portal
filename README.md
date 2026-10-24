@@ -1,5 +1,18 @@
 # argvus-portal
 
+<div align="center">
+
+[![CI](https://github.com/argvus/argvus-portal/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/argvus/argvus-portal/actions/workflows/ci.yml)
+[![License](https://img.shields.io/github/license/argvus/argvus-portal)](./LICENSE)
+[![Language: Shell](https://img.shields.io/badge/Shell-POSIX-4EAA25?logo=gnubash&logoColor=white)](https://www.gnu.org/software/bash/)
+[![Platform: Arch Linux | Wayland](https://img.shields.io/badge/platform-Arch%20Linux%20%7C%20Wayland-1793D1?logo=archlinux&logoColor=white)](https://archlinux.org/)
+[![Pull requests](https://img.shields.io/github/issues-pr/argvus/argvus-portal)](https://github.com/argvus/argvus-portal/pulls)
+[![Issues](https://img.shields.io/github/issues/argvus/argvus-portal)](https://github.com/argvus/argvus-portal/issues)
+[![Last commit](https://img.shields.io/github/last-commit/argvus/argvus-portal)](https://github.com/argvus/argvus-portal/commits/main)
+[![Docs](https://img.shields.io/badge/docs-project-blue)](./docs/)
+
+</div>
+
 Wayland, DBus and xdg-desktop-portal integration defaults for ARGVUS.
 
 This Arch package owns the portal/environment configuration layer extracted
