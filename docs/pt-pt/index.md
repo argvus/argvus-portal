@@ -1,0 +1,6 @@
+---
+title: Portais
+description: Configure portais para Hyprland.
+---
+
+`argvus-portal` instala ficheiros de ambiente e seleção de portais para o stack XDG. A configuração Hyprland fica em `/usr/share/argvus/portal/config/xdg-desktop-portal/` na origem do pacote e é projetada para a configuração do sistema durante o empacotamento.
