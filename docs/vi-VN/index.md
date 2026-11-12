@@ -1,5 +1,5 @@
 ---
-title: Portals
+title: Cổng thông tin
 description: Cấu hình lựa chọn cổng thông tin máy tính để bàn cho Hyprland.
 ---
 

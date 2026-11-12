@@ -1,5 +1,5 @@
 ---
-title: Portals
+title: Portal
 description: Konfigurasikan pemilihan portal desktop untuk Hyprland.
 ---
 

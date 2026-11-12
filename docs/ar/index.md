@@ -1,5 +1,5 @@
 ---
-title: Portals
+title: البوابات
 description:                                     .Hyprland ـﻟ ﺐﺘﻜﻤﻟﺍ ﺢﻄﺳ ﺔﺑﺍﻮﺑ ﺭﺎﻴﺘﺧﺍ ﻦﻳﻮﻜﺗ
 ---
 

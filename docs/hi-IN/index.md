@@ -1,5 +1,5 @@
 ---
-title: Portals
+title: पोर्टल
 description: Hyprland के लिए डेस्कटॉप पोर्टल चयन कॉन्फ़िगर करें।
 ---
 

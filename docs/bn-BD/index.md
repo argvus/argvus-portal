@@ -1,5 +1,5 @@
 ---
-title: Portals
+title: পোর্টাল
 description: Hyprland-এর জন্য ডেস্কটপ পোর্টাল নির্বাচন কনফিগার করুন।
 ---
 

@@ -1,5 +1,5 @@
 ---
-title: Portals
+title: Portallar
 description: Hyprland için masaüstü portal seçimlerini yapılandırın.
 ---
 
